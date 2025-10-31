@@ -1,39 +1,240 @@
+<!DOCTYPE html>
 <html lang="en" class="dark">
- <head>
- <style>
-  #loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 9.95); /* Changed from 0.9 to 9.95 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 0.3s ease;
-  }
-  
-  /* Rest of your loading styles remain the same */
-  .loading-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 120px;
-    height: 120px;
-  }
-  
-  .loading-dots {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    animation: rotate 1.5s linear infinite;
-  }
-  
-  .dot {
-    position: absolute;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#000000">
+  <title>EchoEARN</title>
+  <style>
+    body {
+      background-color: #1A1A1A;  /* Dark background */
+      color: #F5F5F5;  /* Light font color */
+      font-family: 'Arial', sans-serif;  /* Modern font */
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #2B2B2B;  /* Dark header */
+      padding: 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    .balance-card {
+      background: #3A3A3A;  /* Card background */
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .balance-card p {
+      text-align: center;
+      margin: 0;
+      padding: 16px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .action-btn {
+      padding: 12px;
+      background: #4a90e2;  /* Button color */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .action-btn:hover {
+      background: #357ABD;  /* Darken on hover */
+    }
+
+    footer {
+      background: #2B2B2B; /* Dark footer */
+      padding: 10px 0;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer-link {
+      color: #F5F5F5;
+      text-decoration: none;
+      text-align: center;
+      flex: 1;
+    }
+
+    .footer-icon {
+      display: block;
+      margin: auto;
+      height: 24px;
+      width: 24px;
+    }
+
+    .footer-link:hover {
+      color: #4a90e2;  /* Change color on hover */
+    }
+
+    /* Loader Styles */
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-text {
+      font-size: 22px;
+      color: #FFF;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="contents">
+    <header class="flex items-center justify-between container">
+      <h1>EchoEARN</h1>
+      <div id="user-profile">
+        <p id="user-fullname" class="font-semibold">Full Name</p>
+        <p id="user-username">@username</p>
+      </div>
+    </header>
+
+    <main class="flex-grow container">
+      <div class="balance-card">
+        <p>Total Balance</p>
+        <p id="balance-display" class="text-4xl font-bold">0</p>
+        <p>0 friends invited • Rank #648</p>
+        <p>Conversion rate: 1 point = 20 Ton</p>
+      </div>
+
+      <h2 class="text-lg font-semibold">Quick Actions</h2>
+      <div class="actions">
+        <button class="action-btn" onclick="location.href='withdraw.html'">Withdraw</button>
+        <button class="action-btn" onclick="location.href='advertise.html'">Advertise</button>
+        <button class="action-btn" onclick="location.href='wallet.html'">Wallet</button>
+        <button class="action-btn" onclick="location.href='history.html'">History</button>
+      </div>
+
+      <h2 class="text-lg font-semibold">AdHive Leaderboard Rank</h2>
+      <div class="flex justify-center items-center p-8">
+        <div class="loader">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lucide lucide-loader-circle animate-spin">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+          </svg>
+          <span class="loading-text">Loading...</span>
+        </div>
+      </div>
+    </main>
+
+    <footer class="flex container">
+      <a class="footer-link" href="home.html" data-discover="true">
+        <img src="icons/home.svg" class="footer-icon" alt="Home">
+        Home
+      </a>
+      <a class="footer-link" href="tasks.html" data-discover="true">
+        <img src="icons/tasks.svg" class="footer-icon" alt="Tasks">
+        Tasks
+      </a>
+      <a class="footer-link" href="earn.html" data-discover="true">
+        <img src="icons/earn.svg" class="footer-icon" alt="Earn">
+        Earn
+      </a>
+      <a class="footer-link" href="ads.html" data-discover="true">
+        <img src="icons/ads.svg" class="footer-icon" alt="Ads">
+        Ads
+      </a>
+      <a class="footer-link" href="profile.html" data-discover="true">
+        <img src="icons/profile.svg" class="footer-icon" alt="Profile">
+        Profile
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Loader implementation and user profile loading script
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.id = 'loading-overlay';
+    loadingOverlay.innerHTML = `  
+      <div class="loading-container">  
+        <div class="loading-dots">  
+          <div class="dot"></div>  
+          <div class="dot"></div>  
+          <div class="dot"></div>  
+          <div class="dot"></div>  
+          <div class="dot"></div>  
+          <div class="dot"></div>  
+          <div class="dot"></div>  
+          <div class="dot"></div>  
+        </div>  
+        <div class="loading-text">EchoEARN</div>  
+      </div>  
+    `;  
+    document.body.appendChild(loadingOverlay);
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        loadingOverlay.style.opacity = '0';
+        setTimeout(() => {
+          if (document.body.contains(loadingOverlay)) {
+            document.body.removeChild(loadingOverlay);
+          }
+        }, 300);
+      }, 1000);
+    
+      const userData = localStorage.getItem('telegramUser');  
+
+      if (userData) {  
+        try {  
+          const user = JSON.parse(userData);  
+          const fullNameElement = document.getElementById('user-fullname');  
+          const usernameElement = document.getElementById('user-username');  
+          
+          const fullName = `${user.first_name} ${user.last_name || ''}`.trim();  
+          fullNameElement.textContent = fullName;  
+          
+          if (user.username) {  
+            usernameElement.textContent = `@${user.username}`;  
+          } else {  
+            usernameElement.textContent = user.first_name;  
+          }  
+        } catch (error) {  
+          console.error('Error parsing user data:', error);  
+        }  
+      } else {  
+        window.location.href = 'index.html';  
+      }  
+    });
+  </script>
+</body>
+</html>
     top: 0;
     left: 50%;
     width: 8px;
